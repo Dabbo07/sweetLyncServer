@@ -1,0 +1,25 @@
+conversation
+    conversationId (unique)
+    conversationAlias (optional, string)
+
+conversation_party
+    conversationId (many)
+    userId (many)
+    notifications (boolean - flag notification if new message appears, default TRUE)
+
+conversation_entry
+    conversationId (many)
+    userId (many)
+    dateTime (for sorting & display)
+    entry (string, encrypted)
+    entryRef (number)
+
+user
+    userId (unique)
+    username (unique)
+    password (string, encrypted)
+    status (int)
+        0 = offline
+        1 = online
+        2 = away
+
