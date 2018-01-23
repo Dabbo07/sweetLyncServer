@@ -57,8 +57,45 @@ ConversationService.prototype.conversationAddEntry = function(entry, successFunc
     );
 };
 
+ConversationService.prototype.getConversationsForUser = function(user, successFunc, failedFunc) {
+    console.log("ConversationService.getConversationsForUser(" + user._id + ")");
+
+    ConversationParty.find( { user_id: user._id } )
+        .then(function(foundUserConversations) {
+            console.log("ConversationService.getConversationsForUser() : Found " + foundUserConversations.length + " conversation(s) for user: " + user.username);
+            var foundConversations = [];
+
+            foundUserConversations.forEach(function(conv) {
+                foundConversations.push(Conversation.findOne( { _id : conv.conversation_id }));
+            });
+            return Promise.all(foundConversations);
+        })
+        .then(function(conversationList) {
+            console.log("ConversationService.getConversationsForUser() : Retrieving " + conversationList.length + " conversation(s) for user: " + user.username);
+            console.log(JSON.stringify(conversationList));
+            successFunc(conversationList);
+        })
+        .catch(function(error) {
+            console.log("ConversationService.getConversationsForUser() : ERROR : " + error);
+            failedFunc(error);
+        });
+};
+
+ConversationService.prototype.getConversationById = function(conversationObj, successFunc, failedFunc) {
+    console.log("ConversationService.getConversationById() : DATA : " + JSON.stringify(conversationObj));
+    console.log("ConversationService.getConversationById : Searching by #" + conversationObj._id);
+    ConversationEntry.find( { conversation_id : conversationObj._id } )
+        .then(function(foundEntries) {
+            console.log("ConversationService.getConversationById : Found " + foundEntries.length + " entries.");
+            successFunc(foundEntries);
+        })
+        .catch(function(error) {
+            console.lof("ConversationService.getConversationById : ERROR : " + error);
+        });
+};
 
 ConversationService.prototype.createOrRetrieveConversation = function(data, successFunc, failedFunc) {
+    console.log("ConversationService.createOrRetrieveConversation() : DATA : " + JSON.stringify(data));
     var queryOps = [
         { 
             $match: {
@@ -95,6 +132,7 @@ ConversationService.prototype.createOrRetrieveConversation = function(data, succ
                 data.conversation.target_id,
                 function(foundUser) {
                     var conversation = new Conversation();
+                    console.log("DEBUG: " + foundUser);
                     conversation.alias = "Conversation with " + foundUser.username;
                     conversation.save(function(err, conversationSaved) {
                         if (err) {
@@ -110,7 +148,7 @@ ConversationService.prototype.createOrRetrieveConversation = function(data, succ
                                 var conversationParty2 = new ConversationParty();
                                 conversationParty2.conversation_id = conversation._id;
                                 conversationParty2.user_id = data.conversation.target_id;
-                                conversationParty2.username = data.foundUser.username;
+                                conversationParty2.username = foundUser.username;
                                 conversationParty2.notifications = true;
                                 conversationParty2.save(function(err, savedConvParty2) {
                                     if (err) {

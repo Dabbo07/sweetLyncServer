@@ -18,7 +18,7 @@ EncryptionService.prototype.encryptText = function(text) {
             iterations: 1000 
         }
     );
-    
+    console.log("Using Encryption Key: " + key);
     var encrypted = CryptoJS.AES.encrypt(
 		text,
         key, 
@@ -33,11 +33,15 @@ EncryptionService.prototype.encryptText = function(text) {
 
 EncryptionService.prototype.decryptText = function(text) {
     var decrypted = "";
+    if (text === undefined || text === null) {
+        console.log("ERROR: Invalid text for decryption.");
+        return "";
+    };
     var data = text.split("{a-");
     if (data.length != 3) {
         console.log("ERROR: Invalid text for decryption.");
         return "";
-    }
+    };
     var key = CryptoJS.PBKDF2(
         cryptKey,
         CryptoJS.enc.Hex.parse(data[1]),

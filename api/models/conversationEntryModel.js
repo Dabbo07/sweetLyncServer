@@ -4,13 +4,13 @@ var Schema = mongoose.Schema;
 
 var ConversationEntrySchema = new Schema({
     conversation_id: {
-        type: String
+        type: mongoose.Schema.Types.ObjectId
     },
     username: {
         type: String
     },
     user_id: {
-        type: String
+        type: mongoose.Schema.Types.ObjectId
     },
     entry_date: {
         type: Date,

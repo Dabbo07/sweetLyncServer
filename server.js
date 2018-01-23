@@ -8,7 +8,7 @@ var express = require('express'),
     ConversationParty = require('./api/models/conversationPartyModel'),
     bodyParser = require('body-parser');
 
-mongoose.Promise = global.Promise;
+mongoose.Promise = require('bluebird');
 mongoose.connect('mongodb://lyncapp:lyncpass@10.24.32.35/sweetlyncdb', { useMongoClient: true });
 
 app.use(bodyParser.urlencoded({ extended: true }));

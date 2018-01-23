@@ -1,6 +1,6 @@
 conversation
     conversationId (unique)
-    conversationAlias (optional, string)
+    conversation_alias (optional, string)
 
 conversation_party
     conversationId (many)
@@ -8,11 +8,12 @@ conversation_party
     notifications (boolean - flag notification if new message appears, default TRUE)
 
 conversation_entry
-    conversationId (many)
-    userId (many)
-    dateTime (for sorting & display)
+    conversation_entry_id (unique)
+    conversation_id (many)
+    user_id (many)
+    entry_date (for sorting & display)
     entry (string, encrypted)
-    entryRef (number)
+    entry_ref (number)
 
 user
     userId (unique)
@@ -23,3 +24,7 @@ user
         1 = online
         2 = away
 
+dabbo : HELLO (a683fce2488c316f70a12b10cb3c8157{a-d425c4d1a85d34bb439702aba860b0d2{a-c35b84a6ba35f35bc72624a21aa0a735)
+
+$ npm install                       ( if moved directory )
+$ node .

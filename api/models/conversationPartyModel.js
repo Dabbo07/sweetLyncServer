@@ -4,10 +4,10 @@ var Schema = mongoose.Schema;
 
 var ConversationPartySchema = new Schema({
     conversation_id: {
-        type: String
+        type: mongoose.Schema.Types.ObjectId
     },
     user_id: {
-        type: String
+        type: mongoose.Schema.Types.ObjectId
     },
     username: {
         type: String

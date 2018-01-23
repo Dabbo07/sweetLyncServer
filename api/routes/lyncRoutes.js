@@ -18,7 +18,13 @@ module.exports = function(app) {
 
     app.route('/conversation/open')
         .post(conversationController.conversation_open);
-    
+
+    app.route('/conversation/select')
+        .post(conversationController.get_conversation_by_id);
+
+    app.route('/conversations/user')
+        .post(conversationController.conversations_list);
+
     app.route('/conversation/detail/full')
         .post(conversationController.conversation_detail_full);
 

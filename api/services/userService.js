@@ -14,8 +14,9 @@ UserService.prototype.validateUser = function(requestUser, validUserFunc, invali
             return false;
         };
         var requestUserPassword = encService.decryptText(requestUser.password);
+        console.log('password: ' + requestUserPassword);
         if (user != null && encService.decryptText(user.password) === requestUserPassword && requestUserPassword != "") {
-            validUserFunc();
+            validUserFunc(user);
             return true;
         } else {
             invalidUserFunc("Invalid user credentials");
@@ -35,10 +36,12 @@ UserService.prototype.getUserById = function(id, successFunc, failedFunc) {
 };
 
 UserService.prototype.getUserList = function(successFunc, failedFunc) {
+    console.log("UserService.getUserList()");
     User.find({}, function(err, userList) {
         if (err) {
             failedFunc('ERROR: Unable to retrieve user list: ' + err)
         } else {
+            console.log("Returning user list: " + userList.length + " item(s)");
             successFunc(userList);
         };
     });
@@ -65,8 +68,10 @@ UserService.prototype.registerNewUser = function(newUser, successFunc, failedFun
 };
 
 UserService.prototype.updateUser = function(updateUserId, updateUser, successFunc, failedFunc) {
+    console.log("UserService.updateUser() : updateUserId : " + updateUserId);
     User.findOne({_id: updateUserId}, function(err, user) {
-        if (err) {
+        console.log("UserService.updateUser() : userLookup : " + JSON.stringify(user));
+        if (err || user === undefined) {
             failedFunc("ERROR: Failed to find user: " + err);
         } else {
             User.findOneAndUpdate({ _id: updateUserId }, updateUser, {new: false}, function(err, updatedUser) {

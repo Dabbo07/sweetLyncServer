@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
 var userService = require('../services/userService').UserService;
 
 exports.user_list = function(req, res) {
+    console.log("userController:user_list() : body: " + JSON.stringify(req.body));
     var requestUser = new User(req.body);
     userService.validateUser(
         requestUser, 
@@ -44,15 +45,25 @@ exports.user_status_update = function(req, res) {
     var requestUser = req.body;
     userService.validateUser(
         requestUser,
-        function() {
+        function(validatedUser) {
             userService.updateUser(
-                requestUser._id,
+                validatedUser._id,
                 requestUser,
                 function() {
-                    res.json("{true}");
+                    console.log('userController.user_status_update() : validatedUser : ' + JSON.stringify(validatedUser));
+                    var responseObj = {
+                        id : validatedUser._id,
+                        error : 'none'
+                    };
+                    res.json(responseObj);
                 },
                 function(errorMessage) {
                     res.send(errorMessage);
+                    var responseObj = {
+                        id : null,
+                        error : errorMessage
+                    };
+                    res.json(responseObj);
                 }
             );
         },
