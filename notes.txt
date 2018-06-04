@@ -1,14 +1,15 @@
 conversation
-    conversationId (unique)
-    conversation_alias (optional, string)
+    _id (unique)
+    conversation_alias (string)
 
 conversation_party
-    conversationId (many)
+    _id (unique)
+    conversation_id (many)
     userId (many)
     notifications (boolean - flag notification if new message appears, default TRUE)
 
 conversation_entry
-    conversation_entry_id (unique)
+    _id (unique)
     conversation_id (many)
     user_id (many)
     entry_date (for sorting & display)
@@ -16,7 +17,7 @@ conversation_entry
     entry_ref (number)
 
 user
-    userId (unique)
+    _id (unique)
     username (unique)
     password (string, encrypted)
     status (int)
@@ -25,6 +26,28 @@ user
         2 = away
 
 dabbo : HELLO (a683fce2488c316f70a12b10cb3c8157{a-d425c4d1a85d34bb439702aba860b0d2{a-c35b84a6ba35f35bc72624a21aa0a735)
+
+-- Mongo DB Setup --
+show dbs;
+use sweetlyncdb;
+db.lync_user.save( {username: "dabbo", password: "a683fce2488c316f70a12b10cb3c8157{a-d425c4d1a85d34bb439702aba860b0d2{a-c35b84a6ba35f35bc72624a21aa0a735", status: 0} );
+db.lync_user.save( {username: "bob", password: "a683fce2488c316f70a12b10cb3c8157{a-d425c4d1a85d34bb439702aba860b0d2{a-c35b84a6ba35f35bc72624a21aa0a735", status: 1} );
+db.createUser( {user: "lyncapp", pwd: "lyncpass", roles: [ { role: "readWrite", db: "sweetlyncdb" } ] } );
+
+db.conversation.save( { conversation_alias: "Some Conversation" });
+
+-- ** (_id) Values need to be obtained from prior queries ** --
+db.conversation_party.save( { conversation_id: ObjectId("5afc02fe95b08541b4665b50"), user_id: ObjectId("5afc231795b08541b4665b5a"), username: "dabbo", notifications: true } );
+db.conversation_party.save( { conversation_id: ObjectId("5afc02fe95b08541b4665b50"), user_id: ObjectId("5afc232095b08541b4665b5b"), username: "bob", notifications: true } );
+
+db.conversation_entry.save( { conversation_id: ObjectId("5afc02fe95b08541b4665b50"), username: "dabbo", entry_ref: 1, entry: "Hello Bob!" });
+db.conversation_entry.save( { conversation_id: ObjectId("5afc02fe95b08541b4665b50"), username: "bob", entry_ref: 2, entry: "Hello Dabbo" });
+db.conversation_entry.save( { conversation_id: ObjectId("5afc02fe95b08541b4665b50"), username: "bob", entry_ref: 3, entry: "What do you want?" });
+db.conversation_entry.save( { conversation_id: ObjectId("5afc02fe95b08541b4665b50"), username: "dabbo", entry_ref: 4, entry: "Just a test!" });
+db.conversation_entry.save( { conversation_id: ObjectId("5afc02fe95b08541b4665b50"), username: "dabbo", entry_ref: 5, entry: "Good bye!" });
+
+--------------------
+
 
 $ npm install                       ( if moved directory )
 $ node .

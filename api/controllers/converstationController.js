@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Conversation = mongoose.model('Conversation'),
     ConversationParty = mongoose.model('ConversationParty'),
-    ConversationEntry = mongoose.model('ConversationEntry');
+    ConversationEntry = mongoose.model('Conversation_Entry');
 
 var encService = require('../services/encryptionService').EncryptionService;
 var userService = require('../services/userService').UserService;

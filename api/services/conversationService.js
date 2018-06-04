@@ -5,7 +5,7 @@ var userService = require('../services/userService').UserService;
 var mongoose = require('mongoose'),
     Conversation = mongoose.model('Conversation'),
     ConversationParty = mongoose.model('ConversationParty'),
-    ConversationEntry = mongoose.model('ConversationEntry');
+    ConversationEntry = mongoose.model('Conversation_Entry');
 
 var ConversationService = function() {};
 
@@ -60,7 +60,7 @@ ConversationService.prototype.conversationAddEntry = function(entry, successFunc
 ConversationService.prototype.getConversationsForUser = function(user, successFunc, failedFunc) {
     console.log("ConversationService.getConversationsForUser(" + user._id + ")");
 
-    ConversationParty.find( { user_id: user._id } )
+    ConversationParty.find({ user_id: user._id })
         .then(function(foundUserConversations) {
             console.log("ConversationService.getConversationsForUser() : Found " + foundUserConversations.length + " conversation(s) for user: " + user.username);
             var foundConversations = [];

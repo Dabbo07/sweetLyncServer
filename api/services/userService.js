@@ -37,7 +37,8 @@ UserService.prototype.getUserById = function(id, successFunc, failedFunc) {
 
 UserService.prototype.getUserList = function(successFunc, failedFunc) {
     console.log("UserService.getUserList()");
-    User.find({}, function(err, userList) {
+    
+    User.find({ }, function(err, userList) {
         if (err) {
             failedFunc('ERROR: Unable to retrieve user list: ' + err)
         } else {

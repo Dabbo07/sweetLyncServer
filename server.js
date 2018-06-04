@@ -9,7 +9,7 @@ var express = require('express'),
     bodyParser = require('body-parser');
 
 mongoose.Promise = require('bluebird');
-mongoose.connect('mongodb://lyncapp:lyncpass@10.24.32.35/sweetlyncdb', { useMongoClient: true });
+mongoose.connect('mongodb://lyncapp:lyncpass@localhost/sweetlyncdb', { useMongoClient: true });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
